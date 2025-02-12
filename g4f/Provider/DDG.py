@@ -50,6 +50,8 @@ class DDG(AsyncGeneratorProvider, ProviderModelMixin):
     @classmethod 
     def validate_model(cls, model: str) -> str:
         """Validates and returns the correct model name"""
+        if not model:
+            return cls.default_model
         if model in cls.model_aliases:
             model = cls.model_aliases[model]
         if model not in cls.models:
@@ -171,12 +173,10 @@ class DDG(AsyncGeneratorProvider, ProviderModelMixin):
                             n: c.value 
                             for n, c in session.cookie_jar.filter_cookies(cls.url).items()
                         }
+                        yield conversation
 
                     if reason is not None:
                         yield FinishReason(reason)
-    
-                    if return_conversation:
-                        yield conversation
 
         except asyncio.TimeoutError as e:
             raise TimeoutError(f"Request timed out: {str(e)}")

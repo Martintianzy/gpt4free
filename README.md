@@ -1,8 +1,3 @@
-
-
-
-![248433934-7886223b-c1d1-4260-82aa-da5741f303bb](https://github.com/xtekky/gpt4free/assets/98614666/ea012c87-76e0-496a-8ac4-e2de090cc6c9)
-
 <a href="https://trendshift.io/repositories/1692" target="_blank"><img src="https://trendshift.io/api/badge/repositories/1692" alt="xtekky%2Fgpt4free | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 ---
@@ -22,8 +17,8 @@
 > _"gpt4free"_ serves as a **PoC** (proof of concept), demonstrating the development of an API package with multi-provider requests, with features like timeouts, load balance and flow control.
 
 > [!NOTE]
-> <sup><strong>Latest version:</strong></sup> [![PyPI version](https://img.shields.io/pypi/v/g4f?color=blue)](https://pypi.org/project/g4f) [![Docker version](https://img.shields.io/docker/v/hlohaus789/g4f?label=docker&color=blue)](https://hub.docker.com/r/hlohaus789/g4f)  
-> <sup><strong>Stats:</strong></sup> [![Downloads](https://static.pepy.tech/badge/g4f)](https://pepy.tech/project/g4f) [![Downloads](https://static.pepy.tech/badge/g4f/month)](https://pepy.tech/project/g4f)
+> <sup><strong>Latest version:</strong></sup><br> [![PyPI version](https://img.shields.io/pypi/v/g4f?color=blue)](https://pypi.org/project/g4f) [![Docker version](https://img.shields.io/docker/v/hlohaus789/g4f?label=docker&color=blue)](https://hub.docker.com/r/hlohaus789/g4f)  
+> <sup><strong>Stats:</strong></sup><br> [![Downloads](https://static.pepy.tech/badge/g4f)](https://pepy.tech/project/g4f) [![Downloads](https://static.pepy.tech/badge/g4f/month)](https://pepy.tech/project/g4f)
 
 ```sh
 pip install -U g4f[all]
@@ -34,23 +29,32 @@ docker pull hlohaus789/g4f
 ```
 
 ## 🆕 What's New
-   - **For comprehensive details on new features and updates, please refer to our** [Releases](https://github.com/xtekky/gpt4free/releases) **page**
-   - **Join our Telegram Channel:** 📨 [telegram.me/g4f_channel](https://telegram.me/g4f_channel)
-   - **Join our Discord Group:** 💬🆕️ [https://discord.gg/5E39JUWUFa](https://discord.gg/5E39JUWUFa)
+
+- **Explore the latest features and updates**  
+  Find comprehensive details on our [Releases Page](https://github.com/xtekky/gpt4free/releases).  
+
+- **Stay updated with our Telegram Channel** 📨  
+  Join us at [telegram.me/g4f_channel](https://telegram.me/g4f_channel).
+  
+- **Subscribe to our Discord News Channel** 💬🆕️  
+  Stay informed about updates via our [News Channel: discord.gg/5E39JUWUFa](https://discord.gg/5E39JUWUFa).
+  
+- **Get support in our Discord Community** 🤝💻  
+  Reach out for help in our [Support Group: discord.gg/qXA4Wf4Fsm](https://discord.gg/qXA4Wf4Fsm).
 
 ## 🔻 Site Takedown
 
 Is your site on this repository and you want to take it down? Send an email to takedown@g4f.ai with proof it is yours and it will be removed as fast as possible. To prevent reproduction please secure your API. 😉
 
 ## 🚀 GPT4Free on HuggingFace
-[![HuggingSpace](https://github.com/user-attachments/assets/1d859e8a-d6fa-416f-a213-ccc26aa11e90)](https://huggingface.co/spaces/roxky/g4f)
+[![HuggingSpace](https://github.com/user-attachments/assets/1d859e8a-d6fa-416f-a213-ccc26aa11e90)](https://huggingface.co/spaces/roxky/g4f-space)
 **Is a proof-of-concept API package for multi-provider AI requests. It showcases features such as:**
 
 - Load balancing and request flow control.
 - Seamless integration with multiple AI providers.
 - Comprehensive text and image generation support.
 
-> Explore the [Visit GPT4Free on HuggingFace Space](https://huggingface.co/spaces/roxky/g4f) for a hosted version or [Duplicate GPT4Free Space](https://huggingface.co/spaces/roxky/g4f?duplicate=true) it for personal use.
+> Explore the [Visit GPT4Free on HuggingFace Space](https://huggingface.co/spaces/roxky/g4f-space) for a hosted version or [Duplicate GPT4Free Space](https://huggingface.co/spaces/roxky/g4f-space?duplicate=true) it for personal use.
 
 ---
 
@@ -89,23 +93,25 @@ Is your site on this repository and you want to take it down? Send an email to t
 
 ### 🐳 Using Docker
 1. **Install Docker:** [Download and install Docker](https://docs.docker.com/get-docker/).
-2. **Set Up Directories:** Before running the container, make sure the necessary data directories exist or can be created. For example, you can create and set ownership on these directories by running:
-   ```bash
+2. **Set Up Directories:** Before running the container, make sure the necessary data directories exist or can be created. For example, you can create and set ownership on these directories by running: 
+```bash
    mkdir -p ${PWD}/har_and_cookies ${PWD}/generated_images
-   chown -R 1000:1000 ${PWD}/har_and_cookies ${PWD}/generated_images
-   ```
-3. **Run the Docker Container:** Use the following commands to pull the latest image and start the container:
-   ```bash
+   sudo chown -R 1200:1201 ${PWD}/har_and_cookies ${PWD}/generated_images
+```
+3. **Run the Docker Container:** Use the following commands to pull the latest image and start the container (Only x64):
+```bash
    docker pull hlohaus789/g4f
-   docker run -p 8080:8080 -p 1337:1337 -p 7900:7900 \
+   docker run -p 8080:8080 -p 7900:7900 \
      --shm-size="2g" \
      -v ${PWD}/har_and_cookies:/app/har_and_cookies \
      -v ${PWD}/generated_images:/app/generated_images \
      hlohaus789/g4f:latest
-   ```
+```
 
-4. **Running the Slim Docker Image:** Use the following command to run the Slim Docker image. This command also updates the `g4f` package at startup and installs any additional dependencies:
-	```bash
+4. **Running the Slim Docker Image:** And use the following commands to run the Slim Docker image. This command also updates the `g4f` package at startup and installs any additional dependencies: (x64 and arm64)
+```bash
+  mkdir -p ${PWD}/har_and_cookies ${PWD}/generated_images
+  chown -R 1000:1000 ${PWD}/har_and_cookies ${PWD}/generated_images
 	docker run \
 	  -p 1337:1337 \
 	  -v ${PWD}/har_and_cookies:/app/har_and_cookies \
@@ -114,11 +120,11 @@ Is your site on this repository and you want to take it down? Send an email to t
 	  rm -r -f /app/g4f/ \
 	  && pip install -U g4f[slim] \
 	  && python -m g4f --debug
-	```
+```
  
 5. **Access the Client Interface:**
-   - **To use the included client, navigate to:** [http://localhost:8080/chat/](http://localhost:8080/chat/) or [http://localhost:1337/chat/](http://localhost:1337/chat/)
-   - **Or set the API base for your client to:** [http://localhost:1337/v1](http://localhost:1337/v1)
+   - **To use the included client, navigate to:** [http://localhost:8080/chat/](http://localhost:8080/chat/)
+   - **Or set the API base for your client to:** [http://localhost:8080/v1](http://localhost:8080/v1)
 
 6. **(Optional) Provider Login:**
    If required, you can access the container's desktop here: http://localhost:7900/?autoconnect=1&resize=scale&password=secret for provider login purposes.
@@ -202,9 +208,13 @@ from g4f.gui import run_gui
 
 run_gui()
 ```
-**Or, run via CLI:**
+**Run via CLI (To start the Flask Server):**
 ```bash
-python -m g4f.cli gui -port 8080 -debug
+python -m g4f.cli gui --port 8080 --debug
+```
+**Or, start the FastAPI Server:**
+```bash
+python -m g4f --port 8080 --debug
 ```
 
 > **Learn More About the GUI:** For detailed instructions on how to set up, configure, and use the GPT4Free GUI, refer to the [GUI Documentation](docs/gui.md) . This guide includes step-by-step details on provider selection, managing conversations, using advanced features like speech recognition, and more.
@@ -218,6 +228,7 @@ The **Interference API** enables seamless integration with OpenAI's services thr
 - **Documentation**: [Interference API Docs](docs/interference-api.md)
 - **Endpoint**: `http://localhost:1337/v1`
 - **Swagger UI**: Explore the OpenAPI documentation via Swagger UI at `http://localhost:1337/docs`
+- **Provider Selection**: [How to Specify a Provider?](docs/selecting_a_provider.md)
 
 This API is designed for straightforward implementation and enhanced compatibility with other OpenAI integrations.
 

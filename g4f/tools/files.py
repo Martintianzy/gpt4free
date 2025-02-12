@@ -78,7 +78,7 @@ from ..providers.asyncio import to_sync_generator
 from ..errors import MissingRequirementsError
 from .. import debug
 
-PLAIN_FILE_EXTENSIONS = ["txt", "xml", "json", "js", "har", "sh", "py", "php", "css", "yaml", "sql", "log", "csv", "twig", "md"]
+PLAIN_FILE_EXTENSIONS = ["txt", "xml", "json", "js", "har", "sh", "py", "php", "css", "yaml", "sql", "log", "csv", "twig", "md", "arc"]
 PLAIN_CACHE = "plain.cache"
 DOWNLOADS_FILE = "downloads.json"
 FILE_LIST = "files.txt"
@@ -225,9 +225,9 @@ def cache_stream(stream: Iterator[str], bucket_dir: Path) -> Iterator[str]:
         for chunk in read_path_chunked(cache_file):
             yield chunk
         return
-    with open(tmp_file, "w") as f:
+    with open(tmp_file, "wb") as f:
         for chunk in stream:
-            f.write(chunk)
+            f.write(chunk.encode(errors="replace"))
             yield chunk
     tmp_file.rename(cache_file)
 
@@ -431,7 +431,7 @@ async def download_urls(
         connector=get_connector(proxy=proxy),
         timeout=ClientTimeout(timeout)
     ) as session:
-        async def download_url(url: str) -> str:
+        async def download_url(url: str, max_depth: int) -> str:
             try:
                 async with session.get(url) as response:
                     response.raise_for_status()
@@ -457,7 +457,7 @@ async def download_urls(
             except (ClientError, asyncio.TimeoutError) as e:
                 debug.log(f"Download failed: {e.__class__.__name__}: {e}")
             return None
-        for filename in await asyncio.gather(*[download_url(url) for url in urls]):
+        for filename in await asyncio.gather(*[download_url(url, max_depth) for url in urls]):
             if filename:
                 yield filename
             else:
@@ -481,18 +481,21 @@ def get_downloads_urls(bucket_dir: Path, delete_files: bool = False) -> Iterator
         if isinstance(data, list):
             for item in data:
                 if "url" in item:
-                    yield item["url"]
+                    yield {"urls": [item.pop("url")], **item}
+                elif "urls" in item:
+                    yield item
 
 def read_and_download_urls(bucket_dir: Path, event_stream: bool = False) -> Iterator[str]:
     urls = get_downloads_urls(bucket_dir)
     if urls:
         count = 0
         with open(os.path.join(bucket_dir, FILE_LIST), 'a') as f:
-            for filename in to_sync_generator(download_urls(bucket_dir, urls)):
-                f.write(f"{filename}\n")
-                if event_stream:
-                    count += 1
-                    yield f'data: {json.dumps({"action": "download", "count": count})}\n\n'
+            for url in urls:
+                for filename in to_sync_generator(download_urls(bucket_dir, **url)):
+                    f.write(f"{filename}\n")
+                    if event_stream:
+                        count += 1
+                        yield f'data: {json.dumps({"action": "download", "count": count})}\n\n'
 
 async def async_read_and_download_urls(bucket_dir: Path, event_stream: bool = False) -> AsyncIterator[str]:
     urls = get_downloads_urls(bucket_dir)
